@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import QRCode from "qrcode";
 import { CONTRACT_ADDRESS, CHAIN_ID, ABI } from "./contract";
+import Verify from "./Verify";
 
 const card = {
   background: "white",
@@ -21,7 +22,7 @@ const button = {
   fontSize: 15,
 };
 
-export default function App() {
+function AdminPage() {
   const [account, setAccount] = useState(null);
   const [isIssuer, setIsIssuer] = useState(false);
   const [certRef, setCertRef] = useState("");
@@ -48,8 +49,8 @@ export default function App() {
       setAccount(address);
       setIsIssuer(await contract.isIssuer(address));
       setStatus("");
-        } catch (e) {
-            setStatus(
+    } catch (e) {
+      setStatus(
         e?.error?.code === -32002
           ? "Une demande est déjà en attente : ouvre MetaMask et valide-la."
           : "Erreur de connexion : " + (e.shortMessage || e.message)
@@ -145,4 +146,12 @@ export default function App() {
       )}
     </div>
   );
+}
+
+export default function App() {
+  const params = new URLSearchParams(window.location.search);
+  const certRef = params.get("verify");
+  const salt = params.get("salt");
+  if (certRef && salt) return <Verify certRef={certRef} salt={salt} />;
+  return <AdminPage />;
 }

@@ -8,3 +8,4 @@ export const ABI = [
   "function verifyCertificate(bytes32 certId, bytes32 hash) view returns (bool exists, bool revoked, bool hashMatches)",
   "function getCertificate(bytes32 certId) view returns (address issuer, uint64 issuedAt, bool revoked)",
 ];
+export const RPC_URL = "http://127.0.0.1:8545";
