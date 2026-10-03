@@ -181,7 +181,9 @@ After issuing, the app shows the QR code, the verification link, the stored hash
 The contract and its transactions are public and can be checked by anyone.
 
 ![Etherscan contract](docs/screenshots/06-etherscan-contract.png)
-![Etherscan transaction](docs/screenshots/07-etherscan-transaction.png)
+*Revocation transaction of `SEPOLIA-REVOKE-001`, visible on Sepolia:*
+
+![Etherscan revocation transaction](docs/screenshots/07-etherscan-transaction.png)
 
 ### 4. Automated tests
 
