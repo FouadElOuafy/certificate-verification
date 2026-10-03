@@ -48,8 +48,12 @@ export default function App() {
       setAccount(address);
       setIsIssuer(await contract.isIssuer(address));
       setStatus("");
-    } catch (e) {
-      setStatus("Erreur de connexion : " + (e.shortMessage || e.message));
+        } catch (e) {
+            setStatus(
+        e?.error?.code === -32002
+          ? "Une demande est déjà en attente : ouvre MetaMask et valide-la."
+          : "Erreur de connexion : " + (e.shortMessage || e.message)
+      );
     }
   }
 
