@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ethers } from "ethers";
 import QRCode from "qrcode";
-import { CONTRACT_ADDRESS, CHAIN_ID, ABI } from "./contract";
+import { CONTRACT_ADDRESS, CHAIN_ID, CHAIN_NAME, ABI } from "./contract";
 import Verify from "./Verify";
 
 const card = {
@@ -36,11 +36,20 @@ function AdminPage() {
         setStatus("MetaMask n'est pas détecté.");
         return;
       }
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x" + CHAIN_ID.toString(16) }],
+        });
+      } catch (switchError) {
+        setStatus("Accepte le changement de réseau dans MetaMask, puis reclique.");
+        return;
+      }
       const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
       const network = await provider.getNetwork();
       if (Number(network.chainId) !== CHAIN_ID) {
-        setStatus("Sélectionne le réseau Hardhat Local dans MetaMask.");
+        setStatus("Sélectionne le réseau " + CHAIN_NAME + " dans MetaMask.");
         return;
       }
       const signer = await provider.getSigner();
@@ -51,7 +60,7 @@ function AdminPage() {
       setStatus("");
     } catch (e) {
       setStatus(
-        e?.error?.code === -32002
+        e?.code === -32002 || e?.error?.code === -32002
           ? "Une demande est déjà en attente : ouvre MetaMask et valide-la."
           : "Erreur de connexion : " + (e.shortMessage || e.message)
       );
