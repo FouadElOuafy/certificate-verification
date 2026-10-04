@@ -142,8 +142,8 @@ PDF + salt ──► SHA-256 ──► hash ──► stored on-chain
 
 **Design choices**
 
-- **Role separation:** the owner manages issuers, and only issuers can issue or revoke.
-- **Custom errors** (`NotIssuer`, `AlreadyExists`, `NotFound`, `AlreadyRevoked`) instead of revert strings, which are cheaper in gas and clearer.
+- **Role separation:** the owner manages issuers. Only issuers can issue, and only the original issuer of a certificate (or the owner) can revoke it.
+- **Custom errors** (`NotIssuer`, `NotCertificateIssuer`, `AlreadyExists`, `NotFound`, `AlreadyRevoked`) instead of revert strings, which are cheaper in gas and clearer.strings, which are cheaper in gas and clearer.
 - **Events** for every state change (`IssuerUpdated`, `CertificateIssued`, `CertificateRevoked`) so everything can be audited off-chain.
 - **Compact storage:** a struct with `bytes32`, `address`, `uint64` timestamp and `bool`.
 
@@ -182,6 +182,7 @@ After issuing, the app shows the QR code, the verification link, the stored hash
 The contract and its transactions are public and can be checked by anyone.
 
 ![Etherscan contract](docs/screenshots/06-etherscan-contract.png)
+
 *Revocation transaction of `SEPOLIA-REVOKE-001`, visible on Sepolia:*
 
 ![Etherscan revocation transaction](docs/screenshots/07-etherscan-transaction.png)
@@ -214,7 +215,7 @@ certificate-verification/
 ├── contracts/
 │   └── CertificateRegistry.sol     # Smart contract
 ├── test/
-│   └── CertificateRegistry.test.js # 5 automated tests
+│   └── CertificateRegistry.test.js # 6 automated tests
 ├── scripts/
 │   └── deploy.js                   # Deployment script
 ├── frontend/
@@ -235,7 +236,7 @@ certificate-verification/
 **Prerequisites:** Node.js 18+ (tested with 24), Git, and the MetaMask browser extension.
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/certificate-verification.git
+git clone https://github.com/FouadElOuafy/certificate-verification.git
 cd certificate-verification
 npm install
 npx hardhat compile
@@ -322,13 +323,13 @@ Deployed instance: [`0x40A96a24DBfF9e9C1141d3EF3Cbe5Cf9EfdB9A91`](https://sepoli
 
 ---
 
-## 👨‍💻 Auteur
+## 👨‍💻 Author
 
-**Fouad El-Ouafy**
+**Fouad EL OUAFY**
 🔗 [GitHub](https://github.com/FouadElOuafy)
 
 ---
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est open source — [MIT License](LICENSE)
+MIT
