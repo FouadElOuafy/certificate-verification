@@ -22,6 +22,7 @@ contract CertificateRegistry is Ownable {
     error AlreadyExists();
     error NotFound();
     error AlreadyRevoked();
+    error NotCertificateIssuer();
 
     modifier onlyIssuer() {
         if (!isIssuer[msg.sender]) revert NotIssuer();
@@ -45,12 +46,13 @@ contract CertificateRegistry is Ownable {
     }
 
     function revokeCertificate(bytes32 certId) external onlyIssuer {
-        Certificate storage c = certificates[certId];
-        if (c.issuedAt == 0) revert NotFound();
-        if (c.revoked) revert AlreadyRevoked();
-        c.revoked = true;
-        emit CertificateRevoked(certId, msg.sender);
-    }
+    Certificate storage c = certificates[certId];
+    if (c.issuedAt == 0) revert NotFound();
+    if (c.issuer != msg.sender && msg.sender != owner()) revert NotCertificateIssuer();
+    if (c.revoked) revert AlreadyRevoked();
+    c.revoked = true;
+    emit CertificateRevoked(certId, msg.sender);
+}
 
     function verifyCertificate(bytes32 certId, bytes32 hash)
         external

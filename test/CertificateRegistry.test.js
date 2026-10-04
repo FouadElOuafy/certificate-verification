@@ -45,4 +45,11 @@ describe("CertificateRegistry", () => {
     const [, revoked] = await registry.verifyCertificate(certId, hash);
     expect(revoked).to.be.true;
   });
+  it("empêche un autre émetteur de révoquer", async () => {
+    const [, , , other] = await ethers.getSigners();
+    await registry.setIssuer(other.address, true);
+    await registry.connect(issuer).issueCertificate(certId, hash);
+    await expect(registry.connect(other).revokeCertificate(certId))
+      .to.be.revertedWithCustomError(registry, "NotCertificateIssuer");
+  });
 });
