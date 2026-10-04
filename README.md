@@ -143,7 +143,7 @@ PDF + salt ──► SHA-256 ──► hash ──► stored on-chain
 **Design choices**
 
 - **Role separation:** the owner manages issuers. Only issuers can issue, and only the original issuer of a certificate (or the owner) can revoke it.
-- **Custom errors** (`NotIssuer`, `NotCertificateIssuer`, `AlreadyExists`, `NotFound`, `AlreadyRevoked`) instead of revert strings, which are cheaper in gas and clearer.strings, which are cheaper in gas and clearer.
+- **Custom errors** (`NotIssuer`, `NotCertificateIssuer`, `AlreadyExists`, `NotFound`, `AlreadyRevoked`) instead of revert strings, which are cheaper in gas and clearer.
 - **Events** for every state change (`IssuerUpdated`, `CertificateIssued`, `CertificateRevoked`) so everything can be audited off-chain.
 - **Compact storage:** a struct with `bytes32`, `address`, `uint64` timestamp and `bool`.
 
@@ -329,7 +329,3 @@ Deployed instance: [`0x40A96a24DBfF9e9C1141d3EF3Cbe5Cf9EfdB9A91`](https://sepoli
 🔗 [GitHub](https://github.com/FouadElOuafy)
 
 ---
-
-## 📄 License
-
-MIT
