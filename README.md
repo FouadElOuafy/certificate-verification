@@ -10,7 +10,7 @@
   <img alt="React" src="https://img.shields.io/badge/React-Vite-61DAFB?logo=react&logoColor=white">
   <img alt="ethers.js" src="https://img.shields.io/badge/ethers.js-v6-2535a0">
   <img alt="Network" src="https://img.shields.io/badge/Network-Sepolia-6f42c1">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-5%20passing-brightgreen">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-6%20passing-brightgreen">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue">
 </p>
 
@@ -136,7 +136,7 @@ PDF + salt ──► SHA-256 ──► hash ──► stored on-chain
 |---|---|---|
 | `setIssuer(address, bool)` | Owner | Authorize or remove an issuer |
 | `issueCertificate(bytes32 certId, bytes32 hash)` | Issuer | Register a certificate. Duplicate IDs are rejected |
-| `revokeCertificate(bytes32 certId)` | Issuer | Mark a certificate as revoked (never deleted) |
+| `revokeCertificate(bytes32 certId)` | Original issuer or owner | Mark a certificate as revoked (never deleted). Other issuers cannot revoke it |
 | `verifyCertificate(bytes32 certId, bytes32 hash)` | Public `view` | Returns `exists`, `revoked`, `hashMatches` |
 | `getCertificate(bytes32 certId)` | Public `view` | Returns `issuer`, `issuedAt`, `revoked` |
 
@@ -154,6 +154,7 @@ PDF + salt ──► SHA-256 ──► hash ──► stored on-chain
 - ✔ a modified document is detected
 - ✔ a duplicate certificate is rejected
 - ✔ revocation works
+- ✔ another issuer cannot revoke a certificate it did not issue
 
 ---
 
